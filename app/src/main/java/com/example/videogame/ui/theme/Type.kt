@@ -23,6 +23,7 @@ val bodyFontFamily = FontFamily(
     Font(
         googleFont = GoogleFont("ADLaM Display"),
         fontProvider = provider,
+        weight = FontWeight.Normal
     )
 )
 
@@ -31,6 +32,7 @@ val displayFontFamily = FontFamily(
     Font(
         googleFont = GoogleFont("ADLaM Display"),
         fontProvider = provider,
+        weight = FontWeight.Bold
     )
 )
 
