@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.compose.AppTheme
 import com.example.videogame.ui.theme.screens.MainMenu
+import com.example.videogame.ui.theme.screens.TickTackToe
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainMenu(modifier = Modifier)
+                    TickTackToe()
                 }
             }
         }
