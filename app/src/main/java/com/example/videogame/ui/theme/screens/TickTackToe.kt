@@ -29,7 +29,7 @@ fun TickTackToe(){
     var gameOver by remember { mutableStateOf(false) }
     var gainedPoints by remember { mutableStateOf(0) }
 
-    fun checkWinner(b: Array<String>): String? {
+    fun checkWinner(): String? {
         // Formas de ganar hardcodeadas
         val lines = listOf(
             listOf(0, 1, 2),
@@ -51,23 +51,28 @@ fun TickTackToe(){
         return null
     }
 
-    fun aiMove() {
+    //Turno del PC:
+    fun pcMove() {
         if (gameOver) return
-        //Busca los espacios vacios del tablero en un filtro
+        //Busca los espacios vacios del tablero en un filtro - filterNotNull()
         val emptySpots = board.mapIndexed { i, v -> if (v == "") i else null }.filterNotNull()
         // Si hay espacios vacios coloca su pieza en un lugar randomizado - if
         if (emptySpots.isNotEmpty()) {
+            // De los espacios vacios escoge uno de ellos al azar - random
             val move = emptySpots.random()
             board = board.copyOf().also { it[move] = "O" }
             // Posibles mensajes a mostrar después de su turno
-            val winner = checkWinner(board)
+            val winner = checkWinner()
+            //Si hay un ganador - como es el turno del PC siempre será el ganador - if
             if (winner != null) {
                 message = "Uh oh... You lose!"
                 gameOver = true
+            // Si está el tablero lleno de fichas - if
             } else if (board.all { it != "" }) {
                 gainedPoints += 10
                 message = "Tie!"
                 gameOver = true
+            // Si no se presenta ninguna de las dos posibilidades se continua la partida - else
             } else {
                 message = "Make your move!"
                 playerTurn = true
@@ -80,10 +85,13 @@ fun TickTackToe(){
         .background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally) {
+        //Aquí se presenta el componente Header que llevará consigo
+        // los puntos acomulados - gainedPoints
         Header(gainedPoints)
         Column(modifier = Modifier.background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+            horizontalAlignment = Alignment.CenterHorizontally)
+        {
             Spacer(Modifier.size(100.dp))
             Text("TICK TACK TOE",
                 textAlign = TextAlign.Center,
@@ -94,38 +102,47 @@ fun TickTackToe(){
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onBackground)
             Spacer(Modifier.size(8.dp))
-            for (i in 0..2) {
-                Row (horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ){
-                    //Coloca tantos Boxs indiquemos en el index
-                    for (j in 0..2) {
+            //Indica las rows que habrá por cada columna - for
+            for (i in 0..2)
+            {
+                Row (horizontalArrangement = Arrangement.spacedBy(8.dp))
+                {
+                    //Indica los boxs que van en cada fila - for
+                    for (j in 0..2)
+                    {
                         val index = i * 3 + j
-                        Box(
-                            modifier = Modifier
-                                .size(80.dp)
+                        // Estas cajas serán clickables, y al hacer dicho click
+                        // se pondrá nuestra pieza "X"
+                        Box(modifier = Modifier.size(80.dp)
                                 .background(MaterialTheme.colorScheme.tertiary)
-                                .clickable(enabled = playerTurn && !gameOver && board[index] == "") {
-                                    // Posibles mensajes a mostrar después clicar uno de los Boxs
-                                    if (!gameOver && board[index] == "") {
-                                        board = board.copyOf().also { it[index] = "X" }
-                                        val winner = checkWinner(board)
-                                        if (winner != null) {
-                                            gainedPoints += 100
-                                            message = "Congratulations, you win!"
-                                            gameOver = true
-                                        } else if (board.all { it != "" }) {
-                                            gainedPoints += 10
-                                            message = "Tie!"
-                                            gameOver = true
-                                        } else {
-                                            message = "IA is making a move"
-                                            playerTurn = false
-                                            aiMove()
-                                        }
-                                    }
-                                },
-                            contentAlignment = Alignment.Center
-                        ) {
+                                .clickable(enabled = playerTurn && !gameOver && board[index] == "")
+                        {
+                            // Posibles mensajes a mostrar después clicar uno de los Boxs
+                            if (!gameOver && board[index] == "") {
+                                board = board.copyOf().also { it[index] = "X" }
+                                val winner = checkWinner()
+                                //Si hay un ganador - como es tu turno siempre serás el ganador - if
+                                if (winner != null) {
+                                    gainedPoints += 100
+                                    message = "Congratulations, you win!"
+                                    gameOver = true
+                                }
+                                // Si está el tablero lleno de fichas - if
+                                else if (board.all { it != "" }) {
+                                    gainedPoints += 10
+                                    message = "Tie!"
+                                    gameOver = true
+                                }
+                                // Si no se presenta ninguna de las dos posibilidades
+                                // se continua la partida - else
+                                else {
+                                    message = "PC is making a move"
+                                    playerTurn = false
+                                    pcMove()
+                                }
+                            }
+                        }, contentAlignment = Alignment.Center)
+                        {
                             Text(text = board[index],
                                 color = MaterialTheme.colorScheme.onTertiary,
                                 style = MaterialTheme.typography.headlineMedium,
@@ -140,14 +157,13 @@ fun TickTackToe(){
             Button(onClick = {
                 board = Array(9) { "" }
                 playerTurn = true
-                message = "Make your turn!"
+                message = "Make your move!"
                 gameOver = false
                              },
                 Modifier.fillMaxWidth()
                     .padding(16.dp)
             ) {
-                Text(
-                    "RETRY",
+                Text("RETRY",
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.onPrimary
                 )
