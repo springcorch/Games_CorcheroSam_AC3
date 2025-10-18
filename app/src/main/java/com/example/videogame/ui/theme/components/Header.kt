@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Header(p: Int, t: Float){
+fun Header(p: Int, t: Int){
     Row(modifier = Modifier
         .fillMaxWidth()
         .size(96.dp)
@@ -62,5 +62,5 @@ fun Header(p: Int, t: Float){
 @Preview(showBackground = true)
 @Composable
 fun HeaderPreview() {
-    Header(0,60f)
+    Header(0,60)
 }

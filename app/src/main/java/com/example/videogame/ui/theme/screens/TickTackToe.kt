@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.Button
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.font.FontWeight
+import kotlinx.coroutines.delay
 
 @Composable
 fun TickTackToe(){
@@ -28,6 +29,23 @@ fun TickTackToe(){
     var message by remember { mutableStateOf("Make your move!") }
     var gameOver by remember { mutableStateOf(false) }
     var gainedPoints by remember { mutableStateOf(0) }
+    var timer by remember { mutableStateOf(60) }
+
+    // Courutina de Kotlin + delay de 1000 milisegundos (1 seg), esta courutina no parará
+    // hasta que GameOver sea true
+    LaunchedEffect(key1 = gameOver) {
+        if (!gameOver) {
+            while (timer > 0) {
+                delay(1000L)
+                timer--
+            }
+            // Se puede perder si el tiempo llega a 0 - if
+            if (timer == 0) {
+                message = "Time's up!"
+                gameOver = true
+            }
+        }
+    }
 
     fun checkWinner(): String? {
         // Formas de ganar hardcodeadas
@@ -87,7 +105,7 @@ fun TickTackToe(){
         horizontalAlignment = Alignment.CenterHorizontally) {
         //Aquí se presenta el componente Header que llevará consigo
         // los puntos acomulados - gainedPoints
-        Header(gainedPoints, 60f)
+        Header(gainedPoints, timer)
         Column(modifier = Modifier.background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally)
@@ -159,6 +177,7 @@ fun TickTackToe(){
                 playerTurn = true
                 message = "Make your move!"
                 gameOver = false
+                timer = 60
                              },
                 Modifier.fillMaxWidth()
                     .padding(16.dp)
