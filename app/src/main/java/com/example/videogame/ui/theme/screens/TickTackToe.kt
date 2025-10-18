@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.Button
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 
 @Composable
@@ -76,15 +75,15 @@ fun TickTackToe(){
     }
 
     //VISUALES
-    Column(modifier = Modifier.fillMaxSize()
+    Column(modifier = Modifier.fillMaxHeight()
         .background(MaterialTheme.colorScheme.background),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally) {
         Header(0)
         Column(modifier = Modifier.background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally) {
-            Spacer(Modifier.size(16.dp))
+            Spacer(Modifier.size(100.dp))
             Text("TICK TACK TOE",
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineLarge,
@@ -97,6 +96,7 @@ fun TickTackToe(){
             for (i in 0..2) {
                 Row (horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ){
+                    //Coloca tantos Boxs indiquemos en el index
                     for (j in 0..2) {
                         val index = i * 3 + j
                         Box(
@@ -133,6 +133,7 @@ fun TickTackToe(){
                 }
             }
             Spacer(Modifier.size(16.dp))
+            // Al reiniciar partida se reinician las variables
             Button(onClick = {
                 board = Array(9) { "" }
                 playerTurn = true
