@@ -3,7 +3,6 @@ package com.example.videogame.ui.theme.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,6 +27,7 @@ fun TickTackToe(){
     var playerTurn by remember { mutableStateOf(true) }
     var message by remember { mutableStateOf("Make your move!") }
     var gameOver by remember { mutableStateOf(false) }
+    var gainedPoints by remember { mutableStateOf(0) }
 
     fun checkWinner(b: Array<String>): String? {
         // Formas de ganar hardcodeadas
@@ -62,9 +62,10 @@ fun TickTackToe(){
             // Posibles mensajes a mostrar después de su turno
             val winner = checkWinner(board)
             if (winner != null) {
-                message = "Player $winner, wins!"
+                message = "Uh oh... You lose!"
                 gameOver = true
             } else if (board.all { it != "" }) {
+                gainedPoints += 10
                 message = "Tie!"
                 gameOver = true
             } else {
@@ -79,7 +80,7 @@ fun TickTackToe(){
         .background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally) {
-        Header(0)
+        Header(gainedPoints)
         Column(modifier = Modifier.background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally) {
@@ -109,9 +110,11 @@ fun TickTackToe(){
                                         board = board.copyOf().also { it[index] = "X" }
                                         val winner = checkWinner(board)
                                         if (winner != null) {
+                                            gainedPoints += 100
                                             message = "Congratulations, you win!"
                                             gameOver = true
                                         } else if (board.all { it != "" }) {
+                                            gainedPoints += 10
                                             message = "Tie!"
                                             gameOver = true
                                         } else {
