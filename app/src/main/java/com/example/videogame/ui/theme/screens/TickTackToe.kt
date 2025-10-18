@@ -87,7 +87,7 @@ fun TickTackToe(){
         horizontalAlignment = Alignment.CenterHorizontally) {
         //Aquí se presenta el componente Header que llevará consigo
         // los puntos acomulados - gainedPoints
-        Header(gainedPoints)
+        Header(gainedPoints, 60f)
         Column(modifier = Modifier.background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally)
