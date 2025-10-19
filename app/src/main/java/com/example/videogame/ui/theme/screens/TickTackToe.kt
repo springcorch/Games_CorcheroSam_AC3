@@ -23,23 +23,29 @@ import kotlinx.coroutines.delay
 @Composable
 fun TickTackToe(onChangeScreen: (String) -> Unit, score: Int, onUpdateScore: (Int) -> Unit){
     // LOGICA
+    // Tablero entero 3x3 - primeramente vacío
     var board by remember { mutableStateOf(Array(9) { "" }) }
+    // Turno del jugador, si es true, es nuestro turno, si es false, el del PC
     var playerTurn by remember { mutableStateOf(true) }
+    // Mensaje que actualizará al jugador de en qué estado está la partida
     var message by remember { mutableStateOf("Make your move!") }
+    // Booleana que decide si ha acabado o no la partida
     var gameOver by remember { mutableStateOf(false) }
     // Para el header
+    // Puntuación que irá ganando la variable global score mediante la partida
     var gainedPoints by remember { mutableStateOf(score) }
     // Actualiza el score global con las locales de esta pantalla
     fun updateScore(points: Int) {
         gainedPoints = points
         onUpdateScore(points)
     }
-
+    // Tiempo entre jugada y jugada
     var timer by remember { mutableStateOf(60) }
 
     // Courutina de Kotlin + delay de 1000 milisegundos (1 seg), esta courutina no parará
     // hasta que GameOver sea true
     LaunchedEffect(key1 = gameOver) {
+        // Mientras el juego transcurra el tiempo irá bajando con un delay
         if (!gameOver) {
             while (timer > 0) {
                 delay(1000L)
@@ -54,7 +60,7 @@ fun TickTackToe(onChangeScreen: (String) -> Unit, score: Int, onUpdateScore: (In
     }
 
     fun checkWinner(): String? {
-        // Formas de ganar hardcodeadas
+        // Formas de ganar hardcodeadas (hor, vert, diagonal)
         val lines = listOf(
             listOf(0, 1, 2),
             listOf(3, 4, 5),
@@ -77,6 +83,7 @@ fun TickTackToe(onChangeScreen: (String) -> Unit, score: Int, onUpdateScore: (In
 
     //Turno del PC:
     fun pcMove() {
+        // Si el juego termina se salta esta función - if
         if (gameOver) return
         //Busca los espacios vacios del tablero en un filtro - filterNotNull()
         val emptySpots = board.mapIndexed { i, v -> if (v == "") i else null }.filterNotNull()
@@ -134,6 +141,7 @@ fun TickTackToe(onChangeScreen: (String) -> Unit, score: Int, onUpdateScore: (In
                     //Indica los boxs que van en cada fila - for
                     for (j in 0..2)
                     {
+                        // Index que indica cada espacio del tablero
                         val index = i * 3 + j
                         // Estas cajas serán clickables, y al hacer dicho click
                         // se pondrá nuestra pieza "X"
@@ -167,6 +175,7 @@ fun TickTackToe(onChangeScreen: (String) -> Unit, score: Int, onUpdateScore: (In
                             }
                         }, contentAlignment = Alignment.Center)
                         {
+                            // Las fichas visualmente mostradas "" "O" "X"
                             Text(text = board[index],
                                 color = MaterialTheme.colorScheme.onTertiary,
                                 style = MaterialTheme.typography.headlineMedium,
