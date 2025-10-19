@@ -39,17 +39,24 @@ fun CrashX(onChangeScreen: (String) -> Unit, score: Int, onUpdateScore: (Int) ->
         gainedPoints = points
         onUpdateScore(points)
     }
+    // Temporizador
     var timer by remember { mutableStateOf(60) }
     // Para el gameplay
+    // Multiplicador de nuestro dinero al gamblear
     var multiplier by remember { mutableStateOf(0.98) }
+    // Cantidad que nosotros pongamos que queremos apostar - TextField
     var betAmount by remember { mutableStateOf(TextFieldValue("")) }
+    // La cantidad añadida que se irá multiplicando y sumando al apostar
     var baseBet by remember { mutableStateOf(0) }
+    // Estado en que se encuentra la partida (un gameover con otro nombre)
     var isGambling by remember { mutableStateOf(false) }
+    // Mensaje que actualiza al jugador qué está pasando
     var message by remember { mutableStateOf("") }
 
     // Courutina de Kotlin + delay de 1000 milisegundos (1 seg), esta courutina no parará
     // hasta que isGambling sea false
     LaunchedEffect(key1 = isGambling) {
+        // Mientras haya gambling este estará funcionando, mete presión
         if (isGambling) {
             while (timer > 0) {
                 delay(1000L)
@@ -140,6 +147,7 @@ fun CrashX(onChangeScreen: (String) -> Unit, score: Int, onUpdateScore: (Int) ->
                                 baseBet = bet
                                 isGambling = true
                                 multiplier = 0.98
+                                // Se quitan los puntos en juego
                                 updateScore(gainedPoints - bet)
                                 message = "You are gambling with $bet points!"
                             }
@@ -174,8 +182,10 @@ fun CrashX(onChangeScreen: (String) -> Unit, score: Int, onUpdateScore: (Int) ->
                 Button(
                     enabled = isGambling && baseBet > 0,
                     onClick = {
+                        // Variable que multiplica el multiplicador por lo apostado
                         val winnings = (baseBet * multiplier).toInt()
                         timer = 60
+                        // Se añade lo multiplicado al score total
                         updateScore(gainedPoints + winnings)
                         message = "You cashed out $winnings points!"
                         baseBet = 0
