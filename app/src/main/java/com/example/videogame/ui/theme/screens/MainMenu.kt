@@ -18,10 +18,8 @@ import androidx.compose.ui.unit.sp
 
 // Screen MainMenu
 @Composable
-fun MainMenu(modifier: Modifier, onChangeScreen: (String) -> Unit){
-    // Variable that counts the total points the player has
-    val points = 0
-    Column(modifier.fillMaxSize(),
+fun MainMenu(onChangeScreen: (String) -> Unit, score: Int){
+    Column(Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center)
     {
@@ -29,7 +27,7 @@ fun MainMenu(modifier: Modifier, onChangeScreen: (String) -> Unit){
             fontSize = 64.sp,
             modifier = Modifier.padding(16.dp),
             textAlign = TextAlign.Center)
-        Text("Puntuation: $points",
+        Text("Puntuation: $score",
             fontSize = 32.sp,
             modifier = Modifier.padding(16.dp))
         //On Click - New screen TickTackToe

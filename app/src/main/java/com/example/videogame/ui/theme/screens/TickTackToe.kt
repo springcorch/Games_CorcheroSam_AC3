@@ -21,13 +21,20 @@ import androidx.compose.ui.text.font.FontWeight
 import kotlinx.coroutines.delay
 
 @Composable
-fun TickTackToe(onChangeScreen: (String) -> Unit){
+fun TickTackToe(onChangeScreen: (String) -> Unit, score: Int, onUpdateScore: (Int) -> Unit){
     // LOGICA
     var board by remember { mutableStateOf(Array(9) { "" }) }
     var playerTurn by remember { mutableStateOf(true) }
     var message by remember { mutableStateOf("Make your move!") }
     var gameOver by remember { mutableStateOf(false) }
-    var gainedPoints by remember { mutableStateOf(0) }
+    // Para el header
+    var gainedPoints by remember { mutableStateOf(score) }
+    // Actualiza el score global con las locales de esta pantalla
+    fun updateScore(points: Int) {
+        gainedPoints = points
+        onUpdateScore(points)
+    }
+
     var timer by remember { mutableStateOf(60) }
 
     // Courutina de Kotlin + delay de 1000 milisegundos (1 seg), esta courutina no parará
@@ -86,7 +93,7 @@ fun TickTackToe(onChangeScreen: (String) -> Unit){
                 gameOver = true
             // Si está el tablero lleno de fichas - if
             } else if (board.all { it != "" }) {
-                gainedPoints += 10
+                updateScore(gainedPoints + 10)
                 message = "Tie!"
                 gameOver = true
             // Si no se presenta ninguna de las dos posibilidades se continua la partida - else
@@ -140,13 +147,13 @@ fun TickTackToe(onChangeScreen: (String) -> Unit){
                                 val winner = checkWinner()
                                 //Si hay un ganador - como es tu turno siempre serás el ganador - if
                                 if (winner != null) {
-                                    gainedPoints += 100
+                                    updateScore(gainedPoints + 100)
                                     message = "Congratulations, you win!"
                                     gameOver = true
                                 }
                                 // Si está el tablero lleno de fichas - if
                                 else if (board.all { it != "" }) {
-                                    gainedPoints += 10
+                                    updateScore(gainedPoints + 10)
                                     message = "Tie!"
                                     gameOver = true
                                 }

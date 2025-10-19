@@ -30,10 +30,15 @@ import kotlinx.coroutines.delay
 // Esto es para que el TextField funcione aunque esté deprecado
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CrashX(onChangeScreen: (String) -> Unit){
+fun CrashX(onChangeScreen: (String) -> Unit, score: Int, onUpdateScore: (Int) -> Unit){
     //LOGICA
     //Para el Header
-    var gainedPoints by remember { mutableStateOf(1000) }
+    var gainedPoints by remember { mutableStateOf(score) }
+    // Actualizamos el score global con las gainedPoints
+    fun updateScore(points: Int) {
+        gainedPoints = points
+        onUpdateScore(points)
+    }
     var timer by remember { mutableStateOf(60) }
     // Para el gameplay
     var multiplier by remember { mutableStateOf(0.98) }
@@ -135,7 +140,7 @@ fun CrashX(onChangeScreen: (String) -> Unit){
                                 baseBet = bet
                                 isGambling = true
                                 multiplier = 0.98
-                                gainedPoints -= bet // sacamos la apuesta inicial de la cuenta
+                                updateScore(gainedPoints - bet)
                                 message = "You are gambling with $bet points!"
                             }
 
@@ -171,7 +176,7 @@ fun CrashX(onChangeScreen: (String) -> Unit){
                     onClick = {
                         val winnings = (baseBet * multiplier).toInt()
                         timer = 60
-                        gainedPoints += winnings
+                        updateScore(gainedPoints + winnings)
                         message = "You cashed out $winnings points!"
                         baseBet = 0
                         multiplier = 0.98
