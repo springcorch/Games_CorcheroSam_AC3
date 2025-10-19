@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.videogame.ui.theme.components.Header
 import kotlinx.coroutines.delay
@@ -31,7 +30,7 @@ import kotlinx.coroutines.delay
 // Esto es para que el TextField funcione aunque esté deprecado
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CrashX(){
+fun CrashX(onChangeScreen: (String) -> Unit){
     //LOGICA
     //Para el Header
     var gainedPoints by remember { mutableStateOf(1000) }
@@ -66,7 +65,7 @@ fun CrashX(){
         horizontalAlignment = Alignment.CenterHorizontally) {
         //Aquí se presenta el componente Header que llevará consigo
         // los puntos acomulados - gainedPoints y temporizador - timer
-        Header(gainedPoints, timer)
+        Header(gainedPoints, timer, onChangeScreen = onChangeScreen)
         Column(modifier = Modifier.background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally)
@@ -195,10 +194,4 @@ fun CrashX(){
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CrashXPreview() {
-    CrashX()
 }

@@ -13,15 +13,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 // Screen MainMenu
 @Composable
-fun MainMenu(modifier: Modifier){
+fun MainMenu(modifier: Modifier, onChangeScreen: (String) -> Unit){
     // Variable that counts the total points the player has
-    val points: Int = 0;
+    val points = 0
     Column(modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center)
@@ -34,7 +33,7 @@ fun MainMenu(modifier: Modifier){
             fontSize = 32.sp,
             modifier = Modifier.padding(16.dp))
         //On Click - New screen TickTackToe
-        Button(onClick = { /*TODO*/ },
+        Button(onClick = { onChangeScreen("ticktacktoe") },
             modifier = Modifier.fillMaxWidth().size(128.dp)
                                 .padding(top = 16.dp, bottom = 16.dp),
             shape = RectangleShape) {
@@ -42,9 +41,4 @@ fun MainMenu(modifier: Modifier){
                 fontSize = 52.sp)
         }
     }
-}
-@Preview(showBackground = true)
-@Composable
-fun MainMenuPreview() {
-    MainMenu(modifier = Modifier)
 }

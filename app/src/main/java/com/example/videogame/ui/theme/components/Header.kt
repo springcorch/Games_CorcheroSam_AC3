@@ -14,11 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Header(p: Int, t: Int){
+fun Header(p: Int, t: Int, onChangeScreen: (String) -> Unit){
     Row(modifier = Modifier
         .fillMaxWidth()
         .size(96.dp)
@@ -27,12 +26,14 @@ fun Header(p: Int, t: Int){
         horizontalArrangement = Arrangement.Center
         )
     {
-        Button(onClick = { /*TODO*/ },
+        // Se cambia la pantalla a mostrar por la de TTT
+        Button(onClick = { onChangeScreen("ticktacktoe") },
             modifier = Modifier.padding(horizontal = 8.dp)
         ) {
             Text("TTT")
         }
-        Button(onClick = { /*TODO*/ },
+        // Se cambia la pantalla a mostrar por la de CrashX
+        Button(onClick = { onChangeScreen("crashx") },
             modifier = Modifier.padding(horizontal = 8.dp)) {
             Text("ChX")
         }
@@ -57,10 +58,4 @@ fun Header(p: Int, t: Int){
                 color = MaterialTheme.colorScheme.onPrimary)
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HeaderPreview() {
-    Header(0,60)
 }

@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.videogame.ui.theme.components.Header
 import androidx.compose.foundation.clickable
@@ -22,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import kotlinx.coroutines.delay
 
 @Composable
-fun TickTackToe(){
+fun TickTackToe(onChangeScreen: (String) -> Unit){
     // LOGICA
     var board by remember { mutableStateOf(Array(9) { "" }) }
     var playerTurn by remember { mutableStateOf(true) }
@@ -105,7 +104,7 @@ fun TickTackToe(){
         horizontalAlignment = Alignment.CenterHorizontally) {
         //Aquí se presenta el componente Header que llevará consigo
         // los puntos acomulados - gainedPoints
-        Header(gainedPoints, timer)
+        Header(gainedPoints, timer, onChangeScreen = onChangeScreen)
         Column(modifier = Modifier.background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally)
@@ -189,10 +188,4 @@ fun TickTackToe(){
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TickTackToePreview() {
-    TickTackToe()
 }

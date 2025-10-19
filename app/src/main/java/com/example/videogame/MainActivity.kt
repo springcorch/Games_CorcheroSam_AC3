@@ -8,9 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.compose.AppTheme
-import com.example.videogame.ui.theme.screens.CrashX
-import com.example.videogame.ui.theme.screens.MainMenu
-import com.example.videogame.ui.theme.screens.TickTackToe
+import com.example.videogame.ui.theme.components.ChangeScreens
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +20,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CrashX()
+                    // Función que decide qué pantalla comenzará y cambiará en su
+                    // transcurso
+                    ChangeScreens()
                 }
             }
         }
